@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="description" content="Webpage description goes here" />
+  <meta charset="utf-8">
+  <title>Change_me</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+  
+<div class="container">
+  
+</div>
+
+<script>
+//global variables
+let OPTIONS = ['rock','paper','scissors'];
+let ROUNDS = 5;
+
+//generate computer's move
+function computerPlay() {
+    let rand_idx = Math.floor(Math.random() * ((OPTIONS.length-1) - 0 + 1)) + 0;
+    console.log("computer's move: "+OPTIONS[rand_idx])
+    return OPTIONS[rand_idx];
+}
+
+//get user's move
+function userPlay() {
+    let play = prompt("Rock, paper, or scissors?");
+    console.log("player's move: " +play);
+    return play;
+}
+
+//play match
+function game() {
+    let i;
+    let c_score = 0;
+    let p_score = 0;
+    for (i=0; i < ROUNDS; i++){
+        c_play = computerPlay();
+        p_play = userPlay();
+        let result = playRound(c_play, p_play);
+        console.log(result);
+        (result.includes("You Win")
+        ? p_score += 1 : c_score += 1);       
+    }
+    (c_score > p_score
+    ? console.log('computer wins match'): console.log('player wins match'))
+
+}
+
+//play round
+function playRound(c_move, p_move) {
+    //normalize input
+    p_move.toLowerCase();
+
+    //set winner variable
+    let winner;
+    if (c_move == OPTIONS[0]) {
+        winner = (p_move==OPTIONS[0] || p_move==OPTIONS[1])
+        ? 'player':'computer';
+    }
+
+    if (c_move == OPTIONS[1]){
+        winner = (p_move==OPTIONS[1] || p_move==OPTIONS[2])
+        ? 'player':'computer';
+    }
+
+    if (c_move == OPTIONS[2]) {
+        winner = (p_move==OPTIONS[2] || p_move==OPTIONS[0])
+        ? 'player':'computer';
+    }
+
+    //return message
+    if (winner == 'player') {
+        return('You Win! ' + p_move+ ' beats ' + c_move)
+    }
+    else{
+        return('You Lose! ' + c_move+ ' beats ' + p_move)
+    }
+    
+    
+
+}
+
+
+game();
+
+
+</script>
+
+</body>
+</html>
