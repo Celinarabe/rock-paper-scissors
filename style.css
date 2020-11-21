@@ -1,15 +1,15 @@
 
 @import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
 
+
 body{
     font-family: 'Press Start 2P', cursive;
     margin:0;
-    background: #000 url('mario.jpg') ;
-    background-repeat:no-repeat;
+    background: #000 url('mario.jpg') no-repeat center center fixed ;
     color:#fff;
     text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; /* adds black outline to text */
     background-size:cover;
-    height:855px;
+    /* height:855px; */
     text-transform:uppercase;
 }
 h1,h2,h3{
@@ -30,9 +30,10 @@ p{
 
 button{
     display:inline-block;
-    padding:0.5em 3em;
+    padding:0.5em 0.5em;
     border:0.16em solid #FFFFFF;
-    margin:30px 30px 30px 30px;
+    width: 50%;
+    margin:15px 5px 15px 5px;
     box-sizing: border-box;
     text-decoration:none;
     text-transform:uppercase;
@@ -45,7 +46,7 @@ button{
 
 img {
     margin-top: 20px;
-    width:200px;
+    width:15%;
 
 }
 
@@ -66,9 +67,9 @@ margin:0.4em auto;
 }
     
 #player {
-    width: auto;
+    width: 25%;
     float: left;
-    height: 400px;
+    height: 50%;
     padding: 25px 50px 75px 50px;
     margin: 50px 50px 75px 50px;
     background-color: blue;
@@ -78,9 +79,9 @@ margin:0.4em auto;
     justify-content: space-evenly;
 }
 #computer {
-    width: 600px;
+    width: 25%;
     float: left;
-    height: 400px;
+    height: 20%;
     padding: 25px 50px 75px 50px;
     margin: 50px 50px 75px 50px;
     background-color: green;
@@ -101,8 +102,11 @@ margin:0.4em auto;
 }
 
 .moves {
-    display: inline-block
+    display: flex;
+    flex-direction: row;
 }
+
+
 
 .clear {
     clear: both;
