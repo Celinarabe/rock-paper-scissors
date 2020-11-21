@@ -2,94 +2,152 @@
 <html lang="en">
 
 <head>
-  <meta name="description" content="Webpage description goes here" />
-  <meta charset="utf-8">
-  <title>Change_me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Rock Paper Scissors</title>
+
+  <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
   
 <div class="container">
-  
+    <h1 class="title">Rock Paper Scissors</h1>
+    <div id="player">
+        <p id="playerScore">Your Score: 0</p>
+        <div class="moves">
+            <button onclick="playRound(computerPlay(), 'rock');displayPicture('landslide.png', 'playerIcon')" id=rockBtn>Rock</button>
+            <button onclick="playRound(computerPlay(), 'paper');displayPicture('copy.png', 'playerIcon')" id=paperBtn>Paper</button>
+            <button onclick="playRound(computerPlay(), 'scissors');displayPicture('scissors.png', 'playerIcon')" id=scissorsBtn>Scissors</button>
+        </div>
+        <p>Your Move: </p>
+        <img id=playerIcon src=''></img>
+        
+    </div>
+    <div id="computer">
+        <p id="compScore">Computer Score: 0</p>
+        <p>Computer's Move: </p>
+        <img id=compIcon src=''></img>
+    </div>
 </div>
+
+<div id="main" class="clear"></div>
+
+<button id="playAgain" onclick="refreshPage()" class="hidden">Play Again</button>
+
+
+
 
 <script>
 //global variables
 let OPTIONS = ['rock','paper','scissors'];
 let ROUNDS = 5;
+let counter = 0;
+let p_move;
+let c_move;
+let playerScore = 0;
+let compScore = 0;
+
+
+function playRound(c_move, p_move) {
+    let winner = calculateWinner(c_move, p_move);   
+    counter += 1;
+    if (counter >= ROUNDS){
+        disableButtons();
+    }
+    console.log('winner variable'+winner);
+    displayWinner(winner, c_move, p_move);
+    
+    if (winner == 'player'){
+        playerScore += 1;
+        document.getElementById("playerScore").innerHTML = "Your Score: "+playerScore;
+    }
+    if (winner == 'computer'){
+        compScore += 1;
+        document.getElementById("compScore").innerHTML = "Computer Score: "+compScore;
+    }
+
+}
+
 
 //generate computer's move
 function computerPlay() {
     let rand_idx = Math.floor(Math.random() * ((OPTIONS.length-1) - 0 + 1)) + 0;
     console.log("computer's move: "+OPTIONS[rand_idx])
-    return OPTIONS[rand_idx];
-}
-
-//get user's move
-function userPlay() {
-    let play = prompt("Rock, paper, or scissors?");
-    console.log("player's move: " +play);
-    return play;
-}
-
-//play match
-function game() {
-    let i;
-    let c_score = 0;
-    let p_score = 0;
-    for (i=0; i < ROUNDS; i++){
-        c_play = computerPlay();
-        p_play = userPlay();
-        let result = playRound(c_play, p_play);
-        console.log(result);
-        (result.includes("You Win")
-        ? p_score += 1 : c_score += 1);       
+    let choice = OPTIONS[rand_idx]
+    console.log(choice);
+    if (choice == 'rock'){
+        displayPicture('landslide.png', 'compIcon');
     }
-    (c_score > p_score
-    ? console.log('computer wins match'): console.log('player wins match'))
-
+    if (choice == 'paper'){
+        displayPicture('copy.png', 'compIcon');
+    }
+    if (choice == 'scissors'){
+        displayPicture('scissors.png', 'compIcon');
+    }
+    return choice;
 }
 
-//play round
-function playRound(c_move, p_move) {
-    //normalize input
-    p_move.toLowerCase();
 
-    //set winner variable
+function calculateWinner(c_move, p_move){
     let winner;
-    if (c_move == OPTIONS[0]) {
-        winner = (p_move==OPTIONS[0] || p_move==OPTIONS[1])
-        ? 'player':'computer';
-    }
-
-    if (c_move == OPTIONS[1]){
-        winner = (p_move==OPTIONS[1] || p_move==OPTIONS[2])
-        ? 'player':'computer';
-    }
-
-    if (c_move == OPTIONS[2]) {
-        winner = (p_move==OPTIONS[2] || p_move==OPTIONS[0])
-        ? 'player':'computer';
-    }
-
-    //return message
-    if (winner == 'player') {
-        return('You Win! ' + p_move+ ' beats ' + c_move)
+    if (c_move == p_move){
+        winner = 'none';
     }
     else{
-        return('You Lose! ' + c_move+ ' beats ' + p_move)
+        if (c_move == OPTIONS[0]) {
+            winner = (p_move==OPTIONS[1])
+            ? 'player':'computer';
+        }
+        if (c_move == OPTIONS[1]){
+            winner = (p_move==OPTIONS[2])
+            ? 'player':'computer';
+        }
+        if (c_move == OPTIONS[2]) {
+            winner = (p_move==OPTIONS[0])
+            ? 'player':'computer';
+        }
+        console.log('winner' + winner);       
     }
-    
-    
-
+    return winner;
 }
 
 
-game();
+function displayPicture(imageLink, id){
+    let newImage = document.getElementById(id);
+    newImage.src = imageLink;
+}
+
+function disableButtons(){
+    console.log('GAME OVER');
+    document.getElementById("rockBtn").disabled = true;
+    document.getElementById("paperBtn").disabled = true;
+    document.getElementById("scissorsBtn").disabled = true;
+    document.getElementById("playAgain").classList.remove('hidden');
+}
+
+function displayWinner(winner, c_move, p_move){
+    const container = document.querySelector("#main");
+    var content = document.createElement("p");
+    content.classList.add('content');
+    
+    if (winner == 'none'){
+        content.textContent = 'Round '+counter+": It's a tie. No points awarded.";
+    }
+    if (winner == 'player') {
+        content.textContent = 'Round '+counter+ ': You Win! ' + p_move+ ' beats ' + c_move;
+    }
+    if (winner == 'computer'){
+        content.textContent = 'Round '+counter+ ': You Lose. ' + c_move+ ' beats ' + p_move;
+    }
+    container.appendChild(content);
+}  
+
+function refreshPage(){
+    window.location.reload();
+} 
 
 
 </script>
